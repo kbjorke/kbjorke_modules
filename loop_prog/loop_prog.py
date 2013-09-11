@@ -7,11 +7,12 @@ class ProgressBar():
         self.fill_tip = '>'
         self.width = 40
         self.fields = 0
+        self.counter = 0
         self.prog_bar = list('['+ self.fill_tip +' '*(self.width-1) + ']'+
                              '   0%') 
 
-    def __call__(self,i, N):
-        _fields = int(self.width*float(i)/N)
+    def __call__(self, steps):
+        _fields = int(self.width*float(self.counter)/steps)
         if _fields-self.fields == 0:
             pass
         else:
@@ -23,6 +24,8 @@ class ProgressBar():
 
             sys.stdout.write('\r'+''.join(self.prog_bar))
             sys.stdout.flush()
+                
+        self.counter += 1
 
     def begin(self):
         sys.stdout.write('\r'+''.join(self.prog_bar))
@@ -43,5 +46,5 @@ if __name__ == '__main__':
     N = 1000000
     progress.begin()
     for i in range(1,N):
-        progress(i, N)
+        progress(N)
     progress.end()
