@@ -5,7 +5,7 @@ class ProgressBar():
         self.rog_bar = '[]'
         self.fill_char = '='
         self.fill_tip = '>'
-        self.width = 40
+        self.width = 30
         self.fields = 0
         self.counter = 0
         self.prog_bar = list('['+ self.fill_tip +' '*(self.width-1) + ']'+
@@ -17,7 +17,7 @@ class ProgressBar():
             pass
         else:
             _percent_done = int(100*float(_fields)/self.width)
-            self.fields += 1
+            self.fields += _fields-self.fields
             self.prog_bar[1:1+self.fields] = (self.fields-1)*self.fill_char +\
                     self.fill_tip
             self.prog_bar[-4:-1] = '%3d' % _percent_done
