@@ -1,0 +1,25 @@
+Testa loop progress bar for ei oppgåve i FYS2160 oblig 8.
+Dette var ein loop som i seg sjølv var tidskrevjande,
+kjørte både med og uten progress bar for å sjekke 
+tidsbrukt.
+
+Kjøring der loop progress bar vart brukt i loopen:
+
+kribjork@kribjork-laptop:oblig8$ time python oblig8_3c.py 
+[==============================] 100% - Complete!
+
+real	1m19.944s
+user	1m19.389s
+sys	0m0.396s
+
+
+Kjøring der loop progress bar ikkje vart brukt i loopen
+(kommentert ut frå loopen, men importert):
+
+kribjork@kribjork-laptop:oblig8$ time python oblig8_3c.py 
+
+real	1m17.895s
+user	1m17.453s
+sys	0m0.292s
+
+

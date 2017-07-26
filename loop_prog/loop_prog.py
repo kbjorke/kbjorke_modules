@@ -1,4 +1,5 @@
 import sys
+import time
 
 class ProgressBar():
     def __init__(self):
@@ -8,8 +9,8 @@ class ProgressBar():
         self.fields = 0
         self.percent = 0
         self.counter = 0
-        self.prog_bar = list('['+ self.fill_tip +' '*(self.width-1) + ']'+
-                             '   0%') 
+        self.prog_bar = list("[%s%s]   0%%" % (self.fill_tip, 
+                                               ' '*(self.width-1)))
 
     def __call__(self, steps):
         _fields = int(self.width*float(self.counter)/steps)
@@ -52,8 +53,44 @@ progress = ProgressBar()
         
 if __name__ == '__main__':
 
-    N = 100000
+    import cProfile
+    import pstats
+    import StringIO
+    
+    # Time test:
+    N = 1000000
+    
+    pr = cProfile.Profile()
+    pr.enable()
+    # With progressbar:
+    start_time = time.time()
     progress.begin()
     for i in range(1,N):
+        a = 1 + 2
         progress(N)
     progress.end()
+    elapsed_time_progress = time.time() - start_time
+    pr.disable()
+
+    #Without progressbar:
+    start_time = time.time()
+    for i in range(1,N):
+        a = 1 + 2
+    elapsed_time = time.time() - start_time
+
+    print "Time with progressbar,    N=%d : %f s" % (N,elapsed_time_progress)
+    print "Time without progressbar, N=%d : %f s" % (N, elapsed_time)    
+
+    s = StringIO.StringIO()
+    sortby = 'cumulative'
+    ps = pstats.Stats(pr, stream=s).sort_stats(sortby)
+    ps.print_stats()
+    print s.getvalue()
+
+"""
+kribjork@kribjork-laptop:loop_prog$ python loop_prog.py 
+[==============================] 100% - Complete!
+Time with progressbar,    N=10000000 : 21.780617 s
+Time without progressbar, N=10000000 : 1.345005 s
+"""
+# Code need optimalization, 20x running time when using progressbar to high!
